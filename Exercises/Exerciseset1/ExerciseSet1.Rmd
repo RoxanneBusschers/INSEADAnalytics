@@ -87,13 +87,18 @@ pnl_plot(SPY)
 3. *(Extra points)* What if we want to also see the returns of another company, say Yahoo!, in the same period? Can you get that data and report the statistics for Yahoo!'s stock, too? 
 
 **Your Answers here:**
-<br>
-<br>
-<br>
-<br>
+1. In the first lines of the script dataSet1, the source is set to be google and a vector of companies for which data needs to be loaded is set by 'mytickers' to included SPY and AAPL (mytickers = c("SPY", "AAPL")). For example facebook can be added by adding "FB" to the vector. 
 
-<hr>
-<hr>
+2.Apple:
+  Cumulative returns: 596.6%
+  Average daily returns: 0.148%
+  Standard deviation of daily returns: 2.389%
+
+3.I added YHOO to the vector and found for Yahoo:
+  Cumulative returns: 290.8%
+  Average daily returns: 0.072%
+  Standard deviation of daily returns: 3.019%  
+
 
 ### Part II: Simple Matrix Manipulations
 
@@ -128,13 +133,18 @@ We can also transpose the matrix of returns to create a new "horizontal" matrix.
 2. Based on the help for the R function *apply* (`help(apply)`), can you create again the portfolio of S&P and Apple and plot the returns in a new figure below?
 
 **Your Answers here:**
-<br>
-<br>
-<br>
-<br>
+1.  ncol(transposedData)
+    nrow(transposedData)
 
-<hr>
-<hr>
+2.  PortfolioTransp = apply(transposedData,2,mean)
+    names(PortfolioTransp)<-colnames(transposedData)
+    pnl_plot(PortfolioTransp)
+    
+```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis',fig.align='center', fig=TRUE}
+PortfolioTransp = apply(transposedData,2,mean)
+names(PortfolioTransp)<-colnames(transposedData)
+pnl_plot(PortfolioTransp)
+```
 
 ### Part III: Reproducibility and Customization
 
@@ -146,26 +156,46 @@ This is an important step and will get you to think about the overall process on
 2. *(Extra Exercise)*  Can you get the returns of a few companies and plot the returns of an equal weighted portfolio with those companies during some period you select? 
 
 **Your Answers here:**
-<br>
-<br>
-<br>
-<br>
+1. You can set the variable StartDate in the data.R file equal to '2001-01-01'. Then save this file and rerun the code.
 
-<hr>
-<hr>
+2. Let's make a portfolio consisting of Apple, Facebook and Yahoo and display daily returns from 2002-01-01 till 2012-01-01. We sett the code in dataSet1.R to:
+
+website_used = "yahoo" 
+mytickers = c("FB", "YHOO", "AAPL")  
+startDate = "2002-01-01"
+endDate = "2012-01-01"
+
+We change the definition of tmp to only take the dates uptill the defined enddate
+
+ tmp<-as.matrix(try(getSymbols(Symbols="SPY",from = startDate, to=endDate, src = website_used, auto.assign=FALSE)))
+
+Then we run the code:
+
+```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis',fig.align='center', fig=TRUE}
+source("helpersSet1.R")
+source("dataSet1.R")
+
+portfolio2 = apply(StockReturns,1,mean)
+names(portfolio2) <- rownames(StockReturns)
+pnl_plot(portfolio2)
+```
+
 
 ###  Part IV: Read/Write .CSV files
 
 Finally, one can read and write data in .CSV files. For example, we can save the first 20 days of data for S&P and Apple in a file using the command:
 
 ```{r eval = TRUE, echo=TRUE, comment=NA, warning=FALSE, message=FALSE,results='asis'}
+source("helpersSet1.R")
+source("dataSet1.R")
+
 write.csv(StockReturns[1:20,c("SPY","AAPL")], file = "twentydays.csv", row.names = TRUE, col.names = TRUE) 
 ```
 
 Do not get surpsised if you see the csv file in your directories suddenly! You can then read the data from the csv file using the read.csv command. For example, this will load the data from the csv file and save it in a new variable that now is called "myData": 
 
 ```{r eval = TRUE, echo=TRUE, comment=NA, warning=FALSE, message=FALSE,results='asis'}
-myData <- read.csv(file = "twentydays.csv", header = TRUE, sep=";")
+myData <- read.csv(file = "twentydays.csv", header = TRUE, sep=",")
 ```
 
 Try it!
@@ -180,13 +210,10 @@ myData + StockReturns[1:40,]
 ```
 
 **Your Answers here:**
-<br>
-<br>
-<br>
-<br>
+1. The data was not correctly stored in different columns, instead there is only 1 column with a string. I changed the seperater therefore to ",".
+The answer is 60, so the data that is saved in myData is not equal to the original data in StockReturns. This seems to be due to a rounding issue.
 
-<hr>
-<hr>
+2. I get an error, because StockReturns only has two columns (the first one contains both the dae and the returns) and myData has 3 columns (first with a date and second two with the returns).
 
 ### Extra Question
 
