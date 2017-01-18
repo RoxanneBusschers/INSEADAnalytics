@@ -3,6 +3,7 @@
 title: "Exercise Set 1"
 author: "T. Evgeniou"
 output: html_document
+runtime: shiny
 ---
 
 
@@ -127,6 +128,10 @@ pnl_plot(portfolio)
 
 We can also transpose the matrix of returns to create a new "horizontal" matrix. Let's call this matrix (variable name) transposedData. We can do so using this command:  `transposedData = t(StockReturns)`. 
 
+```{r echo=FALSE, comment=NA, warning=FALSE, message=FALSE,results='asis',fig.align='center', fig=TRUE}
+transposedData = t(StockReturns)
+```
+
 #### Questions
 
 1. What R commands can you use to get the number of rows and number of columns of the new matrix called transposedData?
@@ -205,7 +210,7 @@ Try it!
 1. Once you write and read the data as described above, what happens when you run this command in the console of the RStudio: `sum(myData != StockReturns[1:20,])`
 2. *(Extra exercise)* What do you think will happen if you now run this command, and why:  
 
-```{r eval = FALSE, echo=TRUE}
+```{r eval = TRUE, echo=TRUE}
 myData + StockReturns[1:40,]
 ```
 
@@ -219,13 +224,13 @@ The answer is 60, so the data that is saved in myData is not equal to the origin
 
 Can you now load another dataset from some CSV file and report some basic statistics about that data? 
 
-<br>
+
 
 ### Creating Interactive Documents
 
 Finally, just for fun, one can add some interactivity in the report using [Shiny](http://rmarkdown.rstudio.com/authoring_shiny.html).All one needs to do is set the eval flag of the code chunk below (see the .Rmd file) to "TRUE", add the line "runtime: shiny" at the very begining of the .Rmd file, make the markdown output to be "html_document", and then press "Run Document". 
 
-```{r, eval=FALSE, echo = TRUE}
+```{r, eval=TRUE, echo = TRUE}
 sliderInput("startdate", "Starting Date:", min = 1, max = length(portfolio), 
             value = 1)
 sliderInput("enddate", "End Date:", min = 1, max = length(portfolio), 
