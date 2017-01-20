@@ -229,7 +229,24 @@ myData[,2]+StockReturns[1:40,]. But it would be better to make sure the data is 
 
 Can you now load another dataset from some CSV file and report some basic statistics about that data? 
 
+**Your Answers here:**
 
+We read some data that contains the number of people in the Netherlands in different age groups in different years.
+
+```{r eval = TRUE, echo=TRUE, comment=NA, warning=FALSE, message=FALSE,results='asis'}
+myNLData <- read.csv(file = "C:/Users/Roxanne Busschers/Documents/INSEAD/P3/Big Data/Exercise set 1/Population_NL_age.csv", header = TRUE)
+
+sum(myNLData[myNLData$Perioden==1950,2:6])
+sum(myNLData[myNLData$Perioden==1980,2:6])
+sum(myNLData[myNLData$Perioden==2016,2:6])
+
+which.max(myNLData[myNLData$Perioden==1950,2:6])
+which.max(myNLData[myNLData$Perioden==1980,2:6])
+which.max(myNLData[myNLData$Perioden==2016,2:6])
+```
+
+We find the total number of inhabitants in 1950 to be 10,026,773, 1980: 140,091,014 and in 2016: 16,979,120 
+The age groups are per 20 years, the biggest group was in 1950: janger than 20, in 1980: 20 to 40 and in 2016: 40 to 65 years.
 
 ### Creating Interactive Documents
 
